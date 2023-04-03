@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+      crossorigin="anonymous"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+
+{% block title %}Flight Club{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h1 class="heading ">{{name}} Search For Cheap Flights</h1>
+    <p class="description">List of destinations.</p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <p class="flash">{{ messages[0] }}</p>
+    {% endif %}
+    {% endwith %}
+
+    {% for grad in svi_gradovi %}
+    <div> <h2> {{grad.city}}; IATA: {{grad.iata_code}}; najniza cena {{grad.lowest_price}} EUR</h2>
+        <a href="{{ url_for('pretrazi_i_prikazi_let_za_grad', naslov=grad.iata_code) }}" class="button">Uradi pretragu</a></div>
+    <br>
+    <br>
+
+
+    {% endfor %}
+</div>
+<div class=" container text-center add">
+    <a href="{{ url_for('pretrazi_i_prikazi_let_za_grad', kliknuta_pretraga=True)}}" class="button">Search Movie DB and Add
+        Movie</a>
+</div>
+
+{% endblock %}

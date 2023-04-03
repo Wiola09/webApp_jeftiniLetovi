@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    <hr>
+    <hr>
+
+<!--    <h1 class="heading ">Rezultati za {{rezultat_pretrage[0]["cityTo"]}}</h1>-->
+<!--    {% for i,j in unos_za_pretragu.items() %}-->
+<!--    <h2> key{{i}}  vrednost {{j}}</h2>-->
+<!--    {% endfor %}-->
+    <h1 class="heading ">Za pretragu su unete sledece vrednosti</h1>
+
+
+    <h4>Vremenski prozor za pretragu je od {{unos_za_pretragu["date_from"]}} do {{unos_za_pretragu["date_to"]}}</h4>
+    <h4>Putuje {{unos_za_pretragu["adults"]}} odrasla i  {{unos_za_pretragu["children"]}} dece </h4>
+    <h4>Prihvatljiv broj noćenja na destinaciji je: od {{unos_za_pretragu["nights_in_dst_from"]}} do {{unos_za_pretragu["nights_in_dst_to"]}} noćenja</h4>
+    <h4>Putuje se od Beograda do {{rezultat_pretrage[0]["cityTo"]}} </h4>
+
+    <h1 class="heading">Pet najpovoljnijih letova za navedene uslove je:</h1>
+
+    {% for let in rezultat_pretrage %}
+    <div>
+<!--        <h2>Grad od {{let["cityFrom"]}}</h2>-->
+        <h1 class="heading">CENA {{let["price"]}} EUR</h1>
+
+<!--        <h2>Datum odlaska {{let["route"][0]["local_arrival"]}} </h2>-->
+        {% set departure_time = let["route"][0]["local_departure"].split("T")[1].split(".")[0] %}
+        {% set departure_date = let["route"][0]["local_departure"].split("T")[0] %}
+        {% set year, month, day = departure_date.split("-") %}
+        <p>Datum i vreme dolaska: {{ day }}-{{ month }}-{{ year }} {{ departure_time }}</p>
+
+<!--        <h2>Datum povratka u BGD {{let["route"][-1]["local_arrival"]}} </h2>-->
+        {% set arrival_time = let["route"][-1]["local_arrival"].split("T")[1].split(".")[0] %}
+        {% set arrival_date = let["route"][-1]["local_arrival"].split("T")[0] %}
+        {% set year, month, day = arrival_date.split("-") %}
+        <p>Datum i vreme povratka u BGD: {{ day }}-{{ month }}-{{ year }} {{ arrival_time }}</p>
+
+<!--        <h3>Ukupno trajanje odlaznog leta : {{let["duration"]["departure"]/3600}} h </h3>-->
+        <p>
+          Ukupno trajanje odlaznog leta:
+          {% set duration = let["duration"]["departure"] %}
+          {{ '%02d:%02d' % (duration // 3600, (duration % 3600) // 60) }} h
+        </p>
+
+<!--        <h3>Ukupno trajanje dolaznog leta : {{let["duration"]["return"]/3600}} h</h3>-->
+        <p>
+          Ukupno trajanje dolaznog leta :
+          {% set duration = let["duration"]["return"] %}
+          {{ '%02d:%02d' % (duration // 3600, (duration % 3600) // 60) }} h
+        </p>
+
+
+        <p>Broj noćenja na destinaciji: {{let["nightsInDest"]}}</p>
+<!--        <br>-->
+<!--        <h2>id leta {{let["id"]}}</h2>-->
+        <br>
+        <a href="{{ url_for('pretrazi_i_prikazi_let_za_grad2', objekat_let=let['id']) }}" target="_blank" rel="nofollow" class="button">Prikazi detalje</a>
+
+        <br>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% include "footer.html" %}

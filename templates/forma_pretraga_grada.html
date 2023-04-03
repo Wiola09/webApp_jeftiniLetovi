@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!--# Ovaj deo koda sluzi za menjanje boje dugmeta-->
+{% block styles %}
+    <style>
+        .btn {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+<hr>
+<hr>
+<h1 class="heading">Add a City</h1>
+<div class="container">
+
+    {{ wtf.quick_form(form, novalidate='True') }}
+</div>
+
+
+{% endblock %}
+<!--</body>-->
+<!--{% include "footer.html" %}-->
+<!--</html>-->

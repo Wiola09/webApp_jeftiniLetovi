@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="prikazLeta">
+<h2 class="heading">Trip from {{izabran_put["cityFrom"]}}  to {{izabran_put["cityTo"]}} </h2>
+<h1 class="heading">Price {{izabran_put["price"]}} EUR</h1>
+
+<!--Varijanta 1 Radi, ali pokusacu prikazem datum lepo-->
+<!--<h3>Datum odlaska {{izabran_put["route"][0]["local_departure"]}}</h3>-->
+
+<!--Varijanta 2 Radi, ali pokusacu prikazem datum lepo-->
+<!--{% set departure_time = izabran_put["route"][0]["local_departure"].split("T")[1].split(".")[0] %}-->
+<!--{% set departure_date = izabran_put["route"][0]["local_departure"].split("T")[0] %}-->
+<!--<p>Datum odlaska: {{ departure_date }} {{ departure_time }}</p>-->
+
+{% set departure_time = izabran_put["route"][0]["local_departure"].split("T")[1].split(".")[0] %}
+{% set departure_date = izabran_put["route"][0]["local_departure"].split("T")[0] %}
+{% set year, month, day = departure_date.split("-") %}
+<p>Datum i vreme odlaska: {{ day }}-{{ month }}-{{ year }} {{ departure_time }}</p>
+
+<!--<h3>Datum povratka u BGD {{izabran_put["route"][-1]["local_arrival"]}} </h3>-->
+{% set arrival_time = izabran_put["route"][-1]["local_arrival"].split("T")[1].split(".")[0] %}
+{% set arrival_date = izabran_put["route"][-1]["local_arrival"].split("T")[0] %}
+{% set year, month, day = arrival_date.split("-") %}
+<p>Datum i vreme dolaska: {{ day }}-{{ month }}-{{ year }} {{ arrival_time }}</p>
+
+<p>Broj noćenja na destinaciji: {{izabran_put["nightsInDest"]}}</p>
+<p>Ukupan broj letova u odlasku i dolasku: {{broj_ruta}}</p>
+<p>Prevoznici: {{izabran_put["airlines"]}}</p>
+<p>Preostalo sedista: {{izabran_put["availability"]}}</p>
+<!--<h3>Ukupno trajanje odlaznog leta : {{izabran_put["duration"]["departure"]/3600}} h </h3>-->
+<p>
+  Ukupno trajanje odlaznog leta:
+  {% set duration = izabran_put["duration"]["departure"] %}
+  {{ '%02d:%02d' % (duration // 3600, (duration % 3600) // 60) }} h
+</p>
+<p>
+  Ukupno trajanje dolaznog leta:
+  {% set duration = izabran_put["duration"]["return"] %}
+  {{ '%02d:%02d' % (duration // 3600, (duration % 3600) // 60) }} h
+</p>
+
+<a href="{{link_ka_letu}}" target="_blank" rel="nofollow" class="button">Bukiraj let Google</a>
+<a href="{{izabran_put['deep_link']}}" target="_blank" rel="nofollow" class="button">Bukiraj let Kiwi</a>
+
+<h1 class="heading"> Detalji o putovanju</h1>
+
+{% for key, value in izabran_put.items() %}
+    {% if key == 'route' %}
+        {% for dictionary in value %}
+            <h3>Ruta</h3>
+            <hr>
+            {% for sub_key, sub_value in dictionary.items() %}
+                <p>{{ sub_key }}: {{ sub_value }}</p>
+
+            {% endfor %}
+            <h3>Kraj rute</h3>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>{{ key }}: {{ value }}</p>
+    {% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}
+
+{% include "footer.html" %}
+</html>

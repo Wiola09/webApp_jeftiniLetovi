@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+<hr>
+<hr>
+<h1 class="heading ">Let's fly cheap, hit the road {{name}}</h1>
+{% with messages = get_flashed_messages() %}
+            {% if messages %}
+               {% for message in messages %}
+                 <p class="flash">{{ message }}</p>
+               {% endfor %}
+            {% endif %}
+        {% endwith %}
+<div class="container">
+    <h1 class="heading">Insert return flight search data: </h1>
+    <form action="" method="post" class="form" role="form" novalidate="">
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form.date_from.label }}
+                {{ form.date_from(class_="form-control") }}
+            </div>
+            <div class="col-sm-6">
+                {{ form.date_to.label }}
+                {{ form.date_to(class_="form-control") }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form.adults.label }}
+                {{ form.adults(class_="form-control") }}
+            </div>
+            <div class="col-sm-6">
+                {{ form.children.label }}
+                {{ form.children(class_="form-control") }}
+            </div>
+        </div>
+<!--        <div> <h4>Broj noći na destinaciji, minimalno i maksimalno prihvatljiv</h4></div>-->
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form.nights_in_dst_from.label }}
+                {{ form.nights_in_dst_from(class_="form-control") }}
+                {% for error in form.nights_in_dst_from.errors %}
+                <div class="invalid-feedback" style="display:block">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="col-sm-6">
+                {{ form.nights_in_dst_to.label }}
+                {{ form.nights_in_dst_to(class_="form-control", placeholder=" ") }}
+                {% for error in form.nights_in_dst_to.errors %}
+                <div class="invalid-feedback" style="display:block">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form.polaziste.label }}
+                {{ form.polaziste(class_="form-control") }}
+            </div>
+            <div class="col-sm-6">
+                {{ form.destinacija.label }}
+                {{ form.destinacija(class_="form-control") }}
+            </div>
+
+        </div>
+        <div class="dugme_forma">
+            {{ form.csrf_token }}
+            {{ form.submit(class_="btn btn-primary") }}
+        </div>
+        <h1 class="heading">Delete city </h1>
+        <div class="dugme_forma">
+            {{ form.csrf_token }}
+            {{ form.submit2(class_="btn btn-primary") }}
+        </div>
+        <div>
+            <h1 class="heading">Add city </h1>
+            <a href="{{ url_for('dodaj_grad') }}" class="dugme_forma button">Add Destination</a>
+            <hr>
+<!--    <a href="/biranje_sluzbe" class="dugme_forma button"> Иди на избор службе</a>-->
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+{% include "footer.html" %}

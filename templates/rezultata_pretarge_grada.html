@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<hr>
+
+<h2 class="heading">Za unetu vrednost grada pronađeni su sledeći rezultati: </h2>
+<p>*Potrebno je dodati onaj zapis koji ima trocifrenu oznaku, npr. BEG </p>
+{% for grad in lista_kod_grada %}
+    <hr class="heading">
+    <div> <h4> IATA kod {{grad['code']}}, ime grada je {{grad['name']}}, ime grada i države je {{grad['slug_en']}}"</h4>
+        <a href="{{ url_for('unesi_grad_u_db', iata_kod_grada=grad['code'], ime_grada=grad['name']) }}" class="button">Dodaj u bazu</a></div>
+    <br>
+    {% endfor %}
+{% endblock %}
+
+{% include "footer.html" %}
