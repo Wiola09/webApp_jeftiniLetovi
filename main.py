@@ -115,7 +115,7 @@ def login():
         else:  # If the user has successfully logged in or registered, you need to use the login_user() function to
             # authenticate them.
             login_user(user_object)
-            return redirect(url_for('pocetna_forma_unos', name=user_object.name))
+            return redirect(url_for('pocetna_forma_unos', name=current_user.name))
 
     return render_template("login.html")
 
@@ -126,19 +126,46 @@ def register():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
-        user_object = UserData.pretrazi_db_po_korisniku(UserData, vrednost_za_pretragu=email)
-        # TODO
-        if user_object:
-            # metod flash je iz flaska, dodat kod i u *.html stranici
-            flash("You've already signed up with that email, log in instead!")
-            return redirect(url_for('login'))
 
-        UserData(
-            name=name,
-            email=email,
-            password=password,
-        ).add_user()
-        user = UserFlight.query.filter_by(email=email).first()
+        # Predlog od codeGPT :
+        try:
+            user_object = UserData.pretrazi_db_po_korisniku(UserData, vrednost_za_pretragu=email)
+            if user_object is None:
+                UserData(
+                    name=name,
+                    email=email,
+                    password=password,
+                ).add_user()
+                user = UserFlight.query.filter_by(email=email).first()
+
+            else:
+                flash("You've already signed up with that email, log in instead!")
+
+        except:
+                db.session.rollback()
+                # rukujte s pogreškom na odgovarajući način
+        finally:
+            db.session.close()
+
+        # Moje resenje
+        # try:
+        #     user_object = UserData.pretrazi_db_po_korisniku(UserData, vrednost_za_pretragu=email)
+        # except:
+        #     db.session.rollback()
+        #     db.session.commit()
+        # # TODO
+        # if user_object:
+        #     # metod flash je iz flaska, dodat kod i u *.html stranici
+        #     flash("You've already signed up with that email, log in instead!")
+        #     return redirect(url_for('login'))
+        # # db.session.close()
+        # UserData(
+        #     name=name,
+        #     email=email,
+        #     password=password,
+        # ).add_user()
+        # user = UserFlight.query.filter_by(email=email).first()
+
         # TODO uraditi reformat da se ne koristi direkno klasa DB vec UserData
         """ Kada korisnik pošalje podatke za prijavu (npr. korisničko ime i lozinku), obično se ti podaci proveravaju u 
         bazi podataka kako bi se utvrdilo da li su validni. Ako su podaci validni, korisnik se "autentikuje" 
@@ -146,8 +173,10 @@ def register():
         prijavljenog korisnika.U Flasku se ovo obično radi pomoću login_user() funkcije, koja prima User objekat kao 
         argument i postavlja current_user na taj objekat."""
         login_user(user)
+        print()
 
-        return redirect(url_for("forma_pretraga_grada.html", name=name, logged_in=current_user.is_authenticated))
+        return redirect(url_for("pocetna_forma_unos", name=current_user.name, logged_in=current_user.is_authenticated))
+
     return render_template("register.html")
 
 
@@ -187,16 +216,16 @@ def pocetna_forma_unos():
             print(lista_vrednosti)
             for i in forma:
                 print(i.data)
-            return redirect(url_for("pretrazi_let", name="Miroslav", logged_in=current_user.is_authenticated,
+            return redirect(url_for("pretrazi_let", name=current_user.name, logged_in=current_user.is_authenticated,
                                     recnik=forma.data))
         elif 'submit2' in request.form:
             grad_za_brisanje = forma.destinacija.data
             print(grad_za_brisanje)
             objekat_baza.obrisi_zapis_iz_db(grad_za_brisanje)
             flash(f"The city {grad_za_brisanje} is removed from DB!")
-            return redirect(url_for('pocetna_forma_unos'))
+            return redirect(url_for('pocetna_forma_unos', name=current_user.name))
     print(current_user)
-    return render_template("pocetna_forma_unos.html", form=forma, name=user_name,
+    return render_template("pocetna_forma_unos.html", form=forma, name=current_user.name,
                            logged_in=current_user.is_authenticated)
 
 
