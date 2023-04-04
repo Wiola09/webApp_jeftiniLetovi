@@ -147,7 +147,7 @@ def register():
         argument i postavlja current_user na taj objekat."""
         login_user(user)
 
-        return redirect(url_for("home_prikaz_filmova", name=name, logged_in=current_user.is_authenticated))
+        return redirect(url_for("forma_pretraga_grada.html", name=name, logged_in=current_user.is_authenticated))
     return render_template("register.html")
 
 
