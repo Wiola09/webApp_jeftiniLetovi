@@ -130,7 +130,10 @@ def register():
         # Predlog od codeGPT :
         try:
             user_object = UserData.pretrazi_db_po_korisniku(UserData, vrednost_za_pretragu=email)
-            if user_object is None:
+            if user_object:
+                flash("You've already signed up with that email, log in instead!")
+                return redirect(url_for('login'))
+            else:
                 UserData(
                     name=name,
                     email=email,
@@ -138,11 +141,10 @@ def register():
                 ).add_user()
                 user = UserFlight.query.filter_by(email=email).first()
 
-            else:
-                flash("You've already signed up with that email, log in instead!")
-
         except:
                 db.session.rollback()
+                user = None
+                print(user, "hvata ovaj")
                 # rukujte s pogreškom na odgovarajući način
         finally:
             db.session.close()
