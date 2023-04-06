@@ -58,7 +58,7 @@ class FlightSearch:
         url = "https://tequila-api.kiwi.com/v2/search?"
 
         # recnik_pretraga = {'date_from': '02/04/2023', 'date_to': '01/05/2023', 'adults': '2', 'children': '0', 'nights_in_dst_from': 1,
-        #  'polaziste': 'BEG', 'destinacija': 'Paris', 'nights_in_dst_to': 3, 'submit': True,
+        #  'polaziste': 'BEG', 'destinacija': 'Paris', 'nights_in_dst_to': 3, 'submit_flight_data': True,
         #  'csrf_token': 'ImJhZDQ5ZjJjMGZlMDMyMzg0N2Q1M2FjOWY0NWVjNmY0YTNjYmE0ZWEi.ZCdc4A.2Wp0ZosTi_OtpfkFOfQdwQHliAU'}
 
         print(recnik_pretraga['destinacija'])

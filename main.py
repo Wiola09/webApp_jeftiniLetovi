@@ -207,7 +207,7 @@ def pocetna_forma_unos():
     forma = UnesiPodateZaPretraguForm()
     forma.destinacija.choices = [grad.city for grad in svi_gradovi]
     if forma.validate_on_submit():
-        if 'submit' in request.form:
+        if 'submit_flight_data' in request.form:
             ime_sluzbe = forma.adults.data
             print(ime_sluzbe)
             print(forma.data, "ovo tražim")
@@ -220,7 +220,7 @@ def pocetna_forma_unos():
                 print(i.data)
             return redirect(url_for("pretrazi_let", name=current_user.name, logged_in=current_user.is_authenticated,
                                     recnik=forma.data))
-        elif 'submit2' in request.form:
+        elif 'delete_destination' in request.form:
             grad_za_brisanje = forma.destinacija.data
             print(grad_za_brisanje)
             objekat_baza.obrisi_zapis_iz_db(grad_za_brisanje)
@@ -245,8 +245,8 @@ def formiraj_google_flights_url(odlaz, destinacija, datum_odlaska, datum_povratk
     URL = "https://www.google.com/travel/flights"
     # Izgled objekta pretrage
     # {'date_from': datetime.date(2023, 4, 3), 'date_to': datetime.date(2023, 5, 2), 'adults': '2', 'children': '0',
-    #  'nights_in_dst_from': 1, 'polaziste': 'BEG', 'destinacija': 'Paris', 'nights_in_dst_to': 3, 'submit': True,
-    #  'submit2': False,
+    #  'nights_in_dst_from': 1, 'polaziste': 'BEG', 'destinacija': 'Paris', 'nights_in_dst_to': 3, 'submit_flight_data': True,
+    #  'delete_destination': False,
     #  'csrf_token': 'IjQ3YjVhZTM0ZDllYzVlMTcxMWIwYmIzMjgyYmNhYzU1MGFmNGQwMDEi.ZCnqxg.a8ueSl-QILzNMCPzrAD0MgNdQwk'}
 
     RECNIK_BROJEVI = {"0": "zero", "1": "one", "2": "two", "3": "three", "4": "four", "5": "one", "6": "one",
