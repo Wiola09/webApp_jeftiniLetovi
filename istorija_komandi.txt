@@ -1,0 +1,46 @@
+    1  pwd
+    2  ls
+    3  df -h
+    4  cd ~/
+    5  ls
+    6  pwd
+    7  cd ..
+    8  ls
+    9  cd ubuntu/
+   10  ls
+   11  cd vagrant/
+   12  ls
+   13  df -h
+   14  ls /vagrant_data
+   15  ls  ls/vagrant
+   16  ls /vagrant
+   17  ls /home/
+   18  ls
+   19  pwd
+   20  ls ~/
+   21  python3 -m venv ~/letovi
+   22  apt-install python3-venv
+   23  apt-ger python3-venv
+   24  apt-get python3-venv
+   25  sudo apt-get python3-venv
+   26  apt-get -y  python3-venv
+   27  apt install python3-venv
+   28  sudo apt install python3-venv
+   29  sudo apt install -y  python3-venv
+   30  python3 -m venv ~/letovi
+   31  source ~/letovi/bin/activate
+   32  pip freeze > requirements.txt
+   33  pwd
+   34  ls
+   35  git clone https://github.com/Wiola09/webApp_jeftiniLetovi.git
+   36  ls
+   37  cd webApp_jeftiniLetovi/
+   38  ls
+   39  vim requirements.txt 
+   40  pip install -r requirements.txt
+   41  python main.py
+   42  export TEQUILA_API=vaša_vrednost
+   43  python main.py
+   44  ls
+   45  history
+   46  history > istorija_komandi.txt
